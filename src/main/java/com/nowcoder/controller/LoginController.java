@@ -1,6 +1,7 @@
 package com.nowcoder.controller;
 
 import com.nowcoder.service.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class LoginController {
                   cookie.setMaxAge(3600*24*5);
               }
               response.addCookie(cookie);
+              if (StringUtils.isNotBlank(next)) {
+                  return "redirect:" + next;
+              }
               return "redirect:/";
           }else {
               model.addAttribute("msg",map.get("msg"));
@@ -67,6 +71,7 @@ public class LoginController {
     public String login(Model model,
                         @RequestParam("username") String username,
                         @RequestParam("password") String password,
+                        @RequestParam(value="next", required = false) String next,
                         @RequestParam(value = "rememberme", defaultValue = "false") boolean rememberme,
                         HttpServletResponse response){
 
@@ -79,6 +84,9 @@ public class LoginController {
                     cookie.setMaxAge(3600*24*5);
                 }
                 response.addCookie(cookie);
+                if (StringUtils.isNotBlank(next)) {
+                    return "redirect:" + next;
+                }
                 return "redirect:/";
             }else {
                 model.addAttribute("msg",map.get("msg"));

@@ -3,10 +3,7 @@ package com.nowcoder.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
@@ -34,5 +31,14 @@ public class IndexController {
             red.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
         }
         return red;
+    }
+
+    @RequestMapping(path = {"/profile/{groupId}/{userId}"})
+    @ResponseBody
+    public String profile(@PathVariable("userId") int userId,
+                          @PathVariable("groupId") String groupId,
+                          @RequestParam(value = "type", defaultValue = "1") int type,
+                          @RequestParam(value = "key", required = false) String key) {
+        return String.format("Profile Page of %s / %d, t:%d k: %s", groupId, userId, type, key);
     }
 }
